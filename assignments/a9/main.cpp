@@ -94,13 +94,13 @@ public:
         //// By default, Option (2) (Buzz stars) is turned on, and all the other three are commented out.
         
         //// Background Option (1): Gradient color
-        
+        /*
         {
             auto bg = Add_Interactive_Object<OpenGLBackground>();
             bg->Set_Color(OpenGLColor(.7f, .8f, 1.f, 1.f), OpenGLColor(.5f, .7f, .9f, 1.f));
             bg->Initialize();
         }
-        
+        */
 
         //// Background Option (2): Programmable Canvas
         //// By default, we load a GT buzz + a number of stars
@@ -115,16 +115,16 @@ public:
 
         //// Background Option (3): Sky box
         //// Here we provide a default implementation of a sky box; customize it for your own sky box
-        /*
+        
         {
             // from https://www.humus.name/index.php?page=Textures
             const std::vector<std::string> cubemap_files{
-                "cubemap/posx.jpg",     //// + X
-                "cubemap/negx.jpg",     //// - X
-                "cubemap/posy.jpg",     //// + Y
-                "cubemap/negy.jpg",     //// - Y
-                "cubemap/posz.jpg",     //// + Z
-                "cubemap/negz.jpg",     //// - Z 
+                "cubemap/water_posx.jpg",     //// + X
+                "cubemap/water_negx.jpg",     //// - X
+                "cubemap/water_posy.jpg",     //// + Y
+                "cubemap/water_negy.jpg",     //// - Y
+                "cubemap/water_posz.jpg",     //// + Z
+                "cubemap/water_negz.jpg",     //// - Z 
             };
             OpenGLTextureLibrary::Instance()->Add_CubeMap_From_Files(cubemap_files, "cube_map");
 
@@ -132,7 +132,7 @@ public:
             skybox->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("skybox"));
             skybox->Initialize();
         }
-        */
+        
 
         /*
         //// Background Option (4): Sky sphere
@@ -270,21 +270,25 @@ public:
         }
 
         //// Here we show an example of adding a mesh with noise-terrain (A6)
+        /*
         {
             //// create object by reading an obj mesh
             auto clouds = Add_Obj_Mesh_Object("obj/plane.obj");
 
             //// set object's transform
             float angle = 3.1415927f * .5f;
+
             Matrix4f r, t;
             r << 1, 0, 0, 0,
                 0, cos(angle), -sin(angle), 0,
                 0, sin(angle), cos(angle), 0,
                 0, 0, 0, 1;
+
             t << 4, 0, 0, -10,
-                 0, 1, 0, 1,
-                 0, 0, 5, -10,
-                 0, 0, 0, 1,
+                0, 1, 0, 1,
+                0, 0, 10, -10,
+                0, 0, 0, 1,
+
             clouds->Set_Model_Matrix(t * r);
 
             //// set object's material
@@ -296,6 +300,7 @@ public:
             //// bind shader to object (we do not bind texture for this object because we create noise for texture)
             clouds->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("terrain"));
         }
+        */
 
         //// Here we show an example of adding a mesh with noise-terrain (A6)
         {
