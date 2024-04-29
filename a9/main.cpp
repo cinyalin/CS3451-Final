@@ -54,6 +54,7 @@ public:
         OpenGLShaderLibrary::Instance()->Add_Shader_From_File("shaders/billboard.vert", "shaders/alphablend.frag", "billboard");
         OpenGLShaderLibrary::Instance()->Add_Shader_From_File("shaders/terrain.vert", "shaders/terrain.frag", "terrain");
         OpenGLShaderLibrary::Instance()->Add_Shader_From_File("shaders/skybox.vert", "shaders/skybox.frag", "skybox");
+        OpenGLShaderLibrary::Instance()->Add_Shader_From_File("shaders/mountain.vert", "shaders/mountain.frag", "mountain");
 
         //// Load all the textures you need for the scene
         //// In the function call of Add_Shader_From_File(), we specify two names:
@@ -133,6 +134,7 @@ public:
         }
         */
 
+        /*
         //// Background Option (4): Sky sphere
         //// Here we provide a default implementation of a textured sphere; customize it for your own sky sphere
         {
@@ -187,6 +189,7 @@ public:
             //// bind shader to object
             bunny->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("basic"));
         }
+        */
 
         {
             //// create object by reading an obj mesh
@@ -194,9 +197,9 @@ public:
 
             //// set object's transform
             Matrix4f t;
-            t << .1, 0, 0, 0,
-                0, .1, 0, -1,
-                0, 0, .1, 3,
+            t << .05, 0, 0, 0,
+                0, .05, 0, -1,
+                0, 0, .05, 3,
                 0, 0, 0, 1;
             liles->Set_Model_Matrix(t);
 
@@ -213,6 +216,31 @@ public:
             liles->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("basic"));
         }
 
+        {
+            //// create object by reading an obj mesh
+            auto flower = Add_Obj_Mesh_Object("obj/flower.obj");
+
+            //// set object's transform
+            Matrix4f t;
+            t << 10, 0, 0, -2,
+                0, 10, 0, -1,
+                0, 0, 10, 3,
+                0, 0, 0, 1;
+            flower->Set_Model_Matrix(t);
+
+            //// set object's material
+            flower->Set_Ka(Vector3f(0.1, 0.1, 0.1));
+            flower->Set_Kd(Vector3f(0.7, 0.7, 0.7));
+            flower->Set_Ks(Vector3f(2, 2, 2));
+            flower->Set_Shininess(128);
+
+            //// bind texture to object
+            //flower->Add_Texture("tex_color", OpenGLTextureLibrary::Get_Texture("liles_color"));
+
+            //// bind shader to object
+            flower->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("basic"));
+        }
+
         //// Here we show an example of adding a mesh with noise-terrain (A6)
         {
             //// create object by reading an obj mesh
@@ -225,9 +253,9 @@ public:
                 0, cos(angle), -sin(angle), 0,
                 0, sin(angle), cos(angle), 0,
                 0, 0, 0, 1;
-            t << 2, 0, 0, -5,
+            t << 4, 0, 0, -10,
                  0, 1, 0, -1,
-                 0, 0, 2, -3,
+                 0, 0, 5, -10,
                  0, 0, 0, 1,
             terrain->Set_Model_Matrix(t * r);
 
@@ -253,9 +281,9 @@ public:
                 0, cos(angle), -sin(angle), 0,
                 0, sin(angle), cos(angle), 0,
                 0, 0, 0, 1;
-            t << 2, 0, 0, -5,
+            t << 4, 0, 0, -10,
                  0, 1, 0, 1,
-                 0, 0, 2, -3,
+                 0, 0, 5, -10,
                  0, 0, 0, 1,
             clouds->Set_Model_Matrix(t * r);
 
@@ -267,6 +295,34 @@ public:
 
             //// bind shader to object (we do not bind texture for this object because we create noise for texture)
             clouds->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("terrain"));
+        }
+
+        //// Here we show an example of adding a mesh with noise-terrain (A6)
+        {
+            //// create object by reading an obj mesh
+            auto mountains = Add_Obj_Mesh_Object("obj/plane.obj");
+
+            //// set object's transform
+            float angle = 3.1415927f * .5f;
+            Matrix4f r, t;
+            r << 1, 0, 0, 0,
+                0, cos(angle), -sin(angle), 0,
+                0, sin(angle), cos(angle), 0,
+                0, 0, 0, 1;
+            t << 4, 0, 0, -10,
+                 0, 1, 0, -1,
+                 0, 0, 5, -30,
+                 0, 0, 0, 1,
+            mountains->Set_Model_Matrix(t * r);
+
+            //// set object's material
+            mountains->Set_Ka(Vector3f(0.1f, 0.1f, 0.1f));
+            mountains->Set_Kd(Vector3f(0.6f, 0.6f, 0.6f));
+            mountains->Set_Ks(Vector3f(1, 1, 1));
+            mountains->Set_Shininess(128.f);
+
+            //// bind shader to object (we do not bind texture for this object because we create noise for texture)
+            mountains->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("mountain"));
         }
 
         /*

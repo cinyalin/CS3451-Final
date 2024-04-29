@@ -123,8 +123,11 @@ vec3 shading_terrain(vec3 pos) {
 	float h = pos.z; // + .8;
 	//h = clamp(h, 0.0, 1.0);
 	vec3 emissiveColor = mix(vec3(.1, .4, .5), vec3(.25, .45, .56), h - 0.6);
-	if (kd[2] == 0.8f) {
+	if (kd[0] == 0.8f) {
 		emissiveColor = vec3(1);
+	}
+	if (kd[0] == 0.6f) {
+		emissiveColor = mix(vec3(.4,.6,.2), vec3(.4,.3,.2), h);
 	}
 
 	return color * emissiveColor;
