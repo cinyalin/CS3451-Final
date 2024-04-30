@@ -13,7 +13,7 @@
 #include <unordered_set>
 #include <vector>
 #include <string>
-// hi this is a change
+
 #ifndef __Main_cpp__
 #define __Main_cpp__
 
@@ -71,8 +71,11 @@ public:
         OpenGLTextureLibrary::Instance()->Add_Texture_From_File("tex/bunny_normal.png", "bunny_normal");
         OpenGLTextureLibrary::Instance()->Add_Texture_From_File("tex/window.png", "window_color");
         OpenGLTextureLibrary::Instance()->Add_Texture_From_File("tex/buzz_color.png", "buzz_color");
+        OpenGLTextureLibrary::Instance()->Add_Texture_From_File("tex/sunset_texture.jpg", "sunset_color");
+        OpenGLTextureLibrary::Instance()->Add_Texture_From_File("tex/sunset.png", "sunset2_color");
         OpenGLTextureLibrary::Instance()->Add_Texture_From_File("tex/star.png", "star_color");
-        OpenGLTextureLibrary::Instance()->Add_Texture_From_File("tex/GiantWaterLilies_BaseColor.png", "liles_color");
+        OpenGLTextureLibrary::Instance()->Add_Texture_From_File("tex/GiantWaterLilies_BaseColor.png", "lilies_color");
+        OpenGLTextureLibrary::Instance()->Add_Texture_From_File("tex/lotus_petal.jpg", "lotus_petal");
 
         //// Add all the lights you need for the scene (no more than 4 lights)
         //// The four parameters are position, ambient, diffuse, and specular.
@@ -94,37 +97,38 @@ public:
         //// By default, Option (2) (Buzz stars) is turned on, and all the other three are commented out.
         
         //// Background Option (1): Gradient color
+        
+        // {
+        //     auto bg = Add_Interactive_Object<OpenGLBackground>();
+        //     bg->Set_Color(OpenGLColor(.7f, .8f, 1.f, 1.f), OpenGLColor(.5f, .7f, .9f, 1.f));
+        //     bg->Initialize();
+        // }
+        
         /*
-        {
-            auto bg = Add_Interactive_Object<OpenGLBackground>();
-            bg->Set_Color(OpenGLColor(.7f, .8f, 1.f, 1.f), OpenGLColor(.5f, .7f, .9f, 1.f));
-            bg->Initialize();
-        }
-        */
-
         //// Background Option (2): Programmable Canvas
         //// By default, we load a GT buzz + a number of stars
-        /*
+        
         {
             bgEffect = Add_Interactive_Object<OpenGLBgEffect>();
             bgEffect->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("stars"));
-            bgEffect->Add_Texture("tex_buzz", OpenGLTextureLibrary::Get_Texture("buzz_color")); // bgEffect can also Add_Texture
+            bgEffect->Add_Texture("sunset", OpenGLTextureLibrary::Get_Texture("sunset2_color")); // bgEffect can also Add_Texture
             bgEffect->Initialize();
         }
         */
-
+        
+    
         //// Background Option (3): Sky box
         //// Here we provide a default implementation of a sky box; customize it for your own sky box
         
         {
             // from https://www.humus.name/index.php?page=Textures
             const std::vector<std::string> cubemap_files{
-                "cubemap/water_posx.jpg",     //// + X
-                "cubemap/water_negx.jpg",     //// - X
-                "cubemap/water_posy.jpg",     //// + Y
-                "cubemap/water_negy.jpg",     //// - Y
-                "cubemap/water_posz.jpg",     //// + Z
-                "cubemap/water_negz.jpg",     //// - Z 
+                "cubemap/posx.jpg",     //// + X
+                "cubemap/negx.jpg",     //// - X
+                "cubemap/posy.jpg",     //// + Y
+                "cubemap/negy.jpg",     //// - Y
+                "cubemap/posz.jpg",     //// + Z
+                "cubemap/negz.jpg",     //// - Z 
             };
             OpenGLTextureLibrary::Instance()->Add_CubeMap_From_Files(cubemap_files, "cube_map");
 
@@ -132,7 +136,6 @@ public:
             skybox->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("skybox"));
             skybox->Initialize();
         }
-        
 
         /*
         //// Background Option (4): Sky sphere
@@ -163,6 +166,7 @@ public:
             sphere->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("basic"));
         }
 
+
         //// Here we load a bunny object with the basic shader to show how to add an object into the scene
         {
             //// create object by reading an obj mesh
@@ -191,54 +195,127 @@ public:
         }
         */
 
+        // 1st set of lily pads
         {
             //// create object by reading an obj mesh
-            auto liles = Add_Obj_Mesh_Object("obj/GiantWaterLilies.obj");
+            auto lily = Add_Obj_Mesh_Object("obj/GiantWaterLilies.obj");
 
             //// set object's transform
             Matrix4f t;
-            t << .05, 0, 0, 0,
-                0, .05, 0, -1,
-                0, 0, .05, 3,
+            t << .05, 0, 0, 0.,
+                0, .05, 0, -1.,
+                0, 0, .05, 3.,
                 0, 0, 0, 1;
-            liles->Set_Model_Matrix(t);
+            lily->Set_Model_Matrix(t);
 
             //// set object's material
-            liles->Set_Ka(Vector3f(0.1, 0.1, 0.1));
-            liles->Set_Kd(Vector3f(0.7, 0.7, 0.7));
-            liles->Set_Ks(Vector3f(2, 2, 2));
-            liles->Set_Shininess(128);
+            lily->Set_Ka(Vector3f(0.1, 0.1, 0.1));
+            lily->Set_Kd(Vector3f(0.7, 0.7, 0.7));
+            lily->Set_Ks(Vector3f(2, 2, 2));
+            lily->Set_Shininess(128);
 
             //// bind texture to object
-            liles->Add_Texture("tex_color", OpenGLTextureLibrary::Get_Texture("liles_color"));
+            lily->Add_Texture("tex_color", OpenGLTextureLibrary::Get_Texture("lilies_color"));
 
             //// bind shader to object
-            liles->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("basic"));
+            lily->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("basic"));
+        }
+        
+        // 2nd set of lily pads
+        {
+            //// create object by reading an obj mesh
+            auto lily = Add_Obj_Mesh_Object("obj/GiantWaterLilies.obj");
+
+            //// set object's transform
+            Matrix4f t;
+            t << .05, 0, 0, -1.,
+                0, .05, 0, -1.,
+                0, 0, .05, -2.,
+                0, 0, 0, 1.;
+            float angle = 3.1415927f * -.25f; // rotate 45 degrees counter-clockwisely 
+			Matrix4f r;
+			r << cos(angle), 0., -sin(angle), 0.,
+				0., 1., 0., 0.,
+				sin(angle), 0., cos(angle), 0.,
+				0., 0., 0., 1.;
+            lily->Set_Model_Matrix(t * r);
+
+            //// set object's material
+            lily->Set_Ka(Vector3f(0.1, 0.1, 0.1));
+            lily->Set_Kd(Vector3f(0.7, 0.7, 0.7));
+            lily->Set_Ks(Vector3f(2, 2, 2));
+            lily->Set_Shininess(128);
+
+            //// bind texture to object
+            lily->Add_Texture("tex_color", OpenGLTextureLibrary::Get_Texture("lilies_color"));
+
+            //// bind shader to object
+            lily->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("basic"));
+        }
+        // 3rd set of lily pads
+        {
+            //// create object by reading an obj mesh
+            auto lily = Add_Obj_Mesh_Object("obj/GiantWaterLilies.obj");
+
+            //// set object's transform
+            Matrix4f t;
+            t << .07, 0, 0, 3.,
+                0, .07, 0, -1.,
+                0, 0, .07, 1.,
+                0, 0, 0, 1.;
+            float angle = 3.1415927f * -.5f; // 90 degrees counter-clockwisely 
+			Matrix4f r;
+			r << cos(angle), 0., -sin(angle), 0.,
+				0., 1., 0., 0.,
+				sin(angle), 0., cos(angle), 0.,
+				0., 0., 0., 1.;
+            lily->Set_Model_Matrix(t * r);
+
+            //// set object's material
+            lily->Set_Ka(Vector3f(0.1, 0.1, 0.1));
+            lily->Set_Kd(Vector3f(0.7, 0.7, 0.7));
+            lily->Set_Ks(Vector3f(2, 2, 2));
+            lily->Set_Shininess(128);
+
+            //// bind texture to object
+            lily->Add_Texture("tex_color", OpenGLTextureLibrary::Get_Texture("lilies_color"));
+
+            //// bind shader to object
+            lily->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("basic"));
         }
 
-        {
-            //// create object by reading an obj mesh
-            auto flower = Add_Obj_Mesh_Object("obj/flower.obj");
+        // lotus placement 
+        int lotus_num = 6;
+        for (int i = 0; i < lotus_num; i++) {
+            auto lotus = Add_Obj_Mesh_Object("obj/lotus.obj");
+            lotus->Add_Texture("tex_color", OpenGLTextureLibrary::Get_Texture("lotus_petal"));
+            {
+                // 360 / 6 = 60
+                Matrix4f t;
+				t << 0.09, 0., 0., i * cos(60 * i * 3.14f / 180),
+					0., 0.09, 0.,  -1.08,
+					0., 0., 0.09, i * sin(60 * i * 3.14f / 180),
+					0., 0., 0., 1.;
+				lotus->Set_Model_Matrix(t);
+            }
+            lotus->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("basic"));
+        }
 
-            //// set object's transform
-            Matrix4f t;
-            t << 10, 0, 0, -2,
-                0, 10, 0, -1,
-                0, 0, 10, 3,
-                0, 0, 0, 1;
-            flower->Set_Model_Matrix(t);
-
-            //// set object's material
-            flower->Set_Ka(Vector3f(0.1, 0.1, 0.1));
-            flower->Set_Kd(Vector3f(0.7, 0.7, 0.7));
-            flower->Set_Ks(Vector3f(2, 2, 2));
-            flower->Set_Shininess(128);
-
-            //// bind texture to object
-            //flower->Add_Texture("tex_color", OpenGLTextureLibrary::Get_Texture("liles_color"));
-
-            //// bind shader to object
-            flower->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("basic"));
+        // lotus2 placement
+        int lotus2_num = 5;
+        for (int i = 0; i < lotus2_num; i++) {
+            auto lotus = Add_Obj_Mesh_Object("obj/lotus2.obj");
+            lotus->Add_Texture("tex_color", OpenGLTextureLibrary::Get_Texture("lotus_petal"));
+            {
+                // 360 / 5 = 72
+                Matrix4f t;
+				t << 0.1, 0., 0., i * cos(72 * i * 3.14f / 180) + 1.,
+					0., 0.1, 0.,  -1.08,
+					0., 0., 0.1, i * sin(72 * i * 3.14f / 180) - 1.,
+					0., 0., 0., 1.;
+				lotus->Set_Model_Matrix(t);
+            }
+            lotus->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("basic"));
         }
 
         //// Here we show an example of adding a mesh with noise-terrain (A6)
@@ -270,25 +347,21 @@ public:
         }
 
         //// Here we show an example of adding a mesh with noise-terrain (A6)
-        /*
         {
             //// create object by reading an obj mesh
             auto clouds = Add_Obj_Mesh_Object("obj/plane.obj");
 
             //// set object's transform
             float angle = 3.1415927f * .5f;
-
             Matrix4f r, t;
             r << 1, 0, 0, 0,
                 0, cos(angle), -sin(angle), 0,
                 0, sin(angle), cos(angle), 0,
                 0, 0, 0, 1;
-
             t << 4, 0, 0, -10,
-                0, 1, 0, 1,
-                0, 0, 10, -10,
-                0, 0, 0, 1,
-
+                 0, 1, 0, 1,
+                 0, 0, 5, -10,
+                 0, 0, 0, 1,
             clouds->Set_Model_Matrix(t * r);
 
             //// set object's material
@@ -300,7 +373,6 @@ public:
             //// bind shader to object (we do not bind texture for this object because we create noise for texture)
             clouds->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("terrain"));
         }
-        */
 
         //// Here we show an example of adding a mesh with noise-terrain (A6)
         {
