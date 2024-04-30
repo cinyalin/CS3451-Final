@@ -76,6 +76,9 @@ public:
         OpenGLTextureLibrary::Instance()->Add_Texture_From_File("tex/star.png", "star_color");
         OpenGLTextureLibrary::Instance()->Add_Texture_From_File("tex/GiantWaterLilies_BaseColor.png", "lilies_color");
         OpenGLTextureLibrary::Instance()->Add_Texture_From_File("tex/lotus_petal.jpg", "lotus_petal");
+        OpenGLTextureLibrary::Instance()->Add_Texture_From_File("tex/cloud_normal.png", "cloud_color");
+        OpenGLTextureLibrary::Instance()->Add_Texture_From_File("tex/cloud2_normal.png", "cloud2_color");
+        OpenGLTextureLibrary::Instance()->Add_Texture_From_File("tex/cloud3_normal.png", "cloud3_color");
 
         //// Add all the lights you need for the scene (no more than 4 lights)
         //// The four parameters are position, ambient, diffuse, and specular.
@@ -116,7 +119,6 @@ public:
         }
         */
         
-    
         //// Background Option (3): Sky box
         //// Here we provide a default implementation of a sky box; customize it for your own sky box
         
@@ -194,6 +196,83 @@ public:
             bunny->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("basic"));
         }
         */
+
+        // billboard implementation
+        {
+            //// create object by reading an obj mesh
+            auto cloud = Add_Obj_Mesh_Object("obj/sqad.obj");
+
+            //// set object's transform
+            Matrix4f t;
+            t << 5., 0, 0, 0.,
+                0, 2., 0, 1.5,
+                0, 0, 5., 2.,
+                0, 0, 0, 1.;
+            cloud->Set_Model_Matrix(t);
+
+            //// bind texture to object
+            cloud->Add_Texture("tex_color", OpenGLTextureLibrary::Get_Texture("cloud_color"));
+
+            //// bind shader to object
+            cloud->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("billboard"));
+        }
+        // cloud2 placement
+        {
+            //// create object by reading an obj mesh
+            auto cloud = Add_Obj_Mesh_Object("obj/sqad.obj");
+
+            //// set object's transform
+            Matrix4f t;
+            t << 3., 0, 0, -5.,
+                0, 2.5, 0, 1.5,
+                0, 0, 3., -1.,
+                0, 0, 0, 1.;
+            cloud->Set_Model_Matrix(t);
+
+            //// bind texture to object
+            cloud->Add_Texture("tex_color", OpenGLTextureLibrary::Get_Texture("cloud2_color"));
+
+            //// bind shader to object
+            cloud->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("billboard"));
+        }
+        // cloud3 placement
+        {
+            //// create object by reading an obj mesh
+            auto cloud = Add_Obj_Mesh_Object("obj/sqad.obj");
+
+            //// set object's transform
+            Matrix4f t;
+            t << 2., 0, 0, 5.,
+                0, 2., 0, 1.5,
+                0, 0, 2., 1.,
+                0, 0, 0, 1.;
+            cloud->Set_Model_Matrix(t);
+
+            //// bind texture to object
+            cloud->Add_Texture("tex_color", OpenGLTextureLibrary::Get_Texture("cloud3_color"));
+
+            //// bind shader to object
+            cloud->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("billboard"));
+        }
+        // cloud3 placement
+        {
+            //// create object by reading an obj mesh
+            auto cloud = Add_Obj_Mesh_Object("obj/sqad.obj");
+
+            //// set object's transform
+            Matrix4f t;
+            t << 5., 0, 0, -2.,
+                0, 5., 0, 1.5,
+                0, 0, 5., 2.,
+                0, 0, 0, 1.;
+            cloud->Set_Model_Matrix(t);
+
+            //// bind texture to object
+            cloud->Add_Texture("tex_color", OpenGLTextureLibrary::Get_Texture("cloud3_color"));
+
+            //// bind shader to object
+            cloud->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("billboard"));
+        }
 
         // 1st set of lily pads
         {
@@ -344,34 +423,6 @@ public:
 
             //// bind shader to object (we do not bind texture for this object because we create noise for texture)
             terrain->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("terrain"));
-        }
-
-        //// Here we show an example of adding a mesh with noise-terrain (A6)
-        {
-            //// create object by reading an obj mesh
-            auto clouds = Add_Obj_Mesh_Object("obj/plane.obj");
-
-            //// set object's transform
-            float angle = 3.1415927f * .5f;
-            Matrix4f r, t;
-            r << 1, 0, 0, 0,
-                0, cos(angle), -sin(angle), 0,
-                0, sin(angle), cos(angle), 0,
-                0, 0, 0, 1;
-            t << 4, 0, 0, -10,
-                 0, 1, 0, 1,
-                 0, 0, 5, -10,
-                 0, 0, 0, 1,
-            clouds->Set_Model_Matrix(t * r);
-
-            //// set object's material
-            clouds->Set_Ka(Vector3f(0.1f, 0.1f, 0.1f));
-            clouds->Set_Kd(Vector3f(0.8f, 0.8f, 0.8f));
-            clouds->Set_Ks(Vector3f(1, 1, 1));
-            clouds->Set_Shininess(128.f);
-
-            //// bind shader to object (we do not bind texture for this object because we create noise for texture)
-            clouds->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("terrain"));
         }
 
         //// Here we show an example of adding a mesh with noise-terrain (A6)
