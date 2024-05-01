@@ -9,6 +9,8 @@ layout(std140) uniform camera
     vec4 position;
 };
 
+uniform float iTime;
+
 vec2 hash2(vec2 v)
 {
     vec2 rand = vec2(0, 0);

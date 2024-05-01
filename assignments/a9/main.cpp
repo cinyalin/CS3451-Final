@@ -379,7 +379,6 @@ public:
             }
             lotus->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("basic"));
         }
-
         // lotus2 placement
         int lotus2_num = 5;
         for (int i = 0; i < lotus2_num; i++) {
