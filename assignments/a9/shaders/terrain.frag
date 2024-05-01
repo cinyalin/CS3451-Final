@@ -75,8 +75,7 @@ float noiseOctave(vec2 v, int num)
 
 float height(vec2 v){
     float h = 0;
-	h = (1 - abs(noiseOctave(v, 10))) * 0.05;
-	//if(h<0) h *= .5;
+	h = (1 - abs(noiseOctave(v, 10))) * 0.01 * sin(iTime * 0.5);
 	return h;
 }
 
