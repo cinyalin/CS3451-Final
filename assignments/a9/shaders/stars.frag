@@ -4,6 +4,14 @@ uniform vec2 iResolution;
 uniform float iTime;
 uniform int iFrame;
 
+in vec2 fragCoord; 
+
+#define Time (iTime*1.0) 
+#define DURATION 3.
+#define Gravity 0.7  
+
+const vec2 g = vec2(.0, -Gravity); /* gravity */
+
 uniform sampler2D tex_buzz; 
 
 in vec3 vtx_pos; // [-1, 1]
@@ -23,23 +31,23 @@ vec2 hash2d(float t)
     return vec2(x, y);
 }
 
-vec3 renderParticle(vec2 uv, vec2 pos, float brightness, vec3 color)
+vec4 renderParticle(vec2 uv, vec2 pos, float brightness, vec3 color)
 {
     float d = length(uv - pos);
-    return brightness / d * color;
+    return vec4(brightness / d * color, brightness / d);
 }
 
-vec3 renderStars(vec2 uv)
+vec4 renderStars(vec2 uv)
 {
-    vec3 fragColor = vec3(0.0);
+    vec4 fragColor = vec4(0.0);
 
     float t = iTime;
     for(float i = 0.; i < NUM_STAR; i++)
     {
         vec2 pos = hash2d(i) * 2. - 1.; // map to [-1, 1]
-        float brightness = .0015;
+        float brightness = .005;
         brightness *= sin(1.5 * t + i) * .5 + .5; // flicker
-        vec3 color = vec3(0.15, 0.71, 0.92);
+        vec3 color = vec3(0.92, 0.71, 0.30);
 
         fragColor += renderParticle(uv, pos, brightness, color);
     }
@@ -49,10 +57,18 @@ vec3 renderStars(vec2 uv)
 
 void main()
 {
-    vec3 outputColor = renderStars(vtx_pos.xy);
+    vec4 outputColor = renderStars(vtx_pos.xy);
+    vec2 fragPos = (fragCoord - .5 * iResolution.xy) / iResolution.y;
 
-    vec2 uv = vec2(vtx_uv.x, -vtx_uv.y);
-    vec3 buzzColor = texture(tex_buzz, uv).xyz;
+    // vec2 uv = vec2(vtx_uv.x, -vtx_uv.y);
+    // vec3 buzzColor = texture(tex_buzz, uv).xyz;
 
-    frag_color = vec4(mix(outputColor, buzzColor, (sin(iTime) + 1) * .5 * .2), 1.0);
+    vec2 initPos = vec2(-0.5, -0.5);
+    vec2 initVel = vec2(0.4, 1.);
+    float t = mod(Time, DURATION);
+    float brightness = 0.05;
+    vec3 color = vec3(0.92, 0.71, 0.30);
+    vec4 fragColor = renderStars(fragPos);
+
+    frag_color = outputColor;
 }

@@ -119,6 +119,7 @@ public:
         }
         */
         
+        
         //// Background Option (3): Sky box
         //// Here we provide a default implementation of a sky box; customize it for your own sky box
         
@@ -138,6 +139,7 @@ public:
             skybox->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("skybox"));
             skybox->Initialize();
         }
+        
 
         /*
         //// Background Option (4): Sky sphere
@@ -167,8 +169,9 @@ public:
             //// bind shader to object
             sphere->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("basic"));
         }
+        */
 
-
+        /*
         //// Here we load a bunny object with the basic shader to show how to add an object into the scene
         {
             //// create object by reading an obj mesh
@@ -197,6 +200,7 @@ public:
         }
         */
 
+
         // billboard implementation
         {
             //// create object by reading an obj mesh
@@ -216,6 +220,7 @@ public:
             //// bind shader to object
             cloud->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("billboard"));
         }
+
         // cloud2 placement
         {
             //// create object by reading an obj mesh
@@ -515,6 +520,13 @@ public:
             sphere2->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("environment")); // bind shader to object
         }
         */
+
+        // firefly implementation
+        {
+            bgEffect = Add_Interactive_Object<OpenGLBgEffect>();
+            bgEffect->Add_Shader_Program(OpenGLShaderLibrary::Get_Shader("stars"));
+            bgEffect->Initialize();
+        }
 
         //// This for-loop updates the rendering model for each object on the list
         for (auto &mesh_obj : mesh_object_array){
