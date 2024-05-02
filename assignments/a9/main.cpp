@@ -205,8 +205,8 @@ public:
             //// set object's transform
             Matrix4f t;
             t << 5., 0, 0, 0.,
-                0, 2., 0, 1.5,
-                0, 0, 5., 2.,
+                0, 2., 0, 1.,
+                0, 0, 5., -1.,
                 0, 0, 0, 1.;
             cloud->Set_Model_Matrix(t);
 
@@ -224,7 +224,7 @@ public:
             //// set object's transform
             Matrix4f t;
             t << 3., 0, 0, -5.,
-                0, 2.5, 0, 1.5,
+                0, 2.5, 0, 1.,
                 0, 0, 3., -1.,
                 0, 0, 0, 1.;
             cloud->Set_Model_Matrix(t);
@@ -243,8 +243,8 @@ public:
             //// set object's transform
             Matrix4f t;
             t << 2., 0, 0, 5.,
-                0, 2., 0, 1.5,
-                0, 0, 2., 1.,
+                0, 2., 0, 1.,
+                0, 0, 2., 0.,
                 0, 0, 0, 1.;
             cloud->Set_Model_Matrix(t);
 
@@ -262,8 +262,8 @@ public:
             //// set object's transform
             Matrix4f t;
             t << 5., 0, 0, -2.,
-                0, 5., 0, 1.5,
-                0, 0, 5., 2.,
+                0, 5., 0, 1.,
+                0, 0, 5., -2.,
                 0, 0, 0, 1.;
             cloud->Set_Model_Matrix(t);
 
